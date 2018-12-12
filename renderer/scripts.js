@@ -28,6 +28,8 @@ $('[data-tab]').click((ev) => {
   }
 })
 
+$('#loader').click(reloadSection)
+
 function reloadSection () {
   let dataTgt = $('.nav-link.active').get(0).dataset.tab
   let cmdGet = `get${dataTgt}`
@@ -41,6 +43,107 @@ function pendingSection () {
 
 function displaySection (sect) {
   $('main').html('')
+  if (sect === 'Processor') {
+    $('main').append(`
+      <div id="processor">
+        <h5>Processor</h5>
+        <div class="form-group row">
+          <label class="col-2 col-form-label">Processor</label>
+          <div class="col-10">
+            <input type="text" readonly class="form-control" value="${window.infoCPU.brand}">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-2 col-form-label">Manufacturer</label>
+          <div class="col-4">
+            <input type="text" readonly class="form-control" value="${window.infoCPU.manufacturer}">
+          </div>
+          <label class="col-2 col-form-label">Vendor</label>
+          <div class="col-4">
+            <input type="text" readonly class="form-control" value="${window.infoCPU.vendor}">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-2 col-form-label">Family</label>
+          <div class="col-2">
+            <input type="text" readonly class="form-control" value="${window.infoCPU.family}">
+          </div>
+          <label class="col-2 col-form-label">Model</label>
+          <div class="col-2">
+            <input type="text" readonly class="form-control" value="${window.infoCPU.model}">
+          </div>
+          <label class="col-2 col-form-label">Stepping</label>
+          <div class="col-2">
+            <input type="text" readonly class="form-control" value="${window.infoCPU.stepping}">
+          </div>
+        </div>
+      </div>
+      <hr>
+
+      <div class="row">
+        <div id="clocks" class="col-4">
+          <h5>Clocks</h5>
+          <div class="form-group row">
+            <label class="col-5 col-form-label">Max Clock</label>
+            <div class="col-7">
+              <input type="text" readonly class="form-control" value="${window.infoCPUSpeed.max} GHz">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-5 col-form-label">Avg. Clock</label>
+            <div class="col-7">
+              <input type="text" readonly class="form-control" value="${window.infoCPUSpeed.avg} GHz">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-5 col-form-label">Min Clock</label>
+            <div class="col-7">
+              <input type="text" readonly class="form-control" value="${window.infoCPUSpeed.min} GHz">
+            </div>
+          </div>
+        </div>
+        <div id="cache" class="col-8">
+          <h5>Cache</h5>
+          <div class="form-group row">
+            <label class="col-3 col-form-label">L1 Data</label>
+            <div class="col-6">
+              <input type="text" readonly class="form-control" value="${formatBytes(window.infoCPU.cache.l1d)}">
+            </div>
+            <div class="col-3">
+              <input type="text" readonly class="form-control" value="${window.infoCPU.cores}-way">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-3 col-form-label">L1 Inst.</label>
+            <div class="col-6">
+              <input type="text" readonly class="form-control" value="${formatBytes(window.infoCPU.cache.l1i)}">
+            </div>
+            <div class="col-3">
+              <input type="text" readonly class="form-control" value="${window.infoCPU.cores}-way">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-3 col-form-label">L2 Cache</label>
+            <div class="col-6">
+              <input type="text" readonly class="form-control" value="${formatBytes(window.infoCPU.cache.l2)}">
+            </div>
+            <div class="col-3">
+              <input type="text" readonly class="form-control" value="${window.infoCPU.cores}-way">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-3 col-form-label">L3 Cache</label>
+            <div class="col-6">
+              <input type="text" readonly class="form-control" value="${formatBytes(window.infoCPU.cache.l3)}">
+            </div>
+            <div class="col-3">
+              <input type="text" readonly class="form-control" value="${window.infoCPU.cores * 2}-way">
+            </div>
+          </div>
+        </div>
+      </div>
+    `)
+  }
 }
 
 function formatBytes (bytes, decimals) {
