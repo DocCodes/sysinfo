@@ -16,6 +16,7 @@ module.exports = {
 
   CONFIG_PATH: path.dirname(appConfig.filePath),
 
+  ABOUT_URL: pkg.homepage,
   GITHUB_URL: pkg.repository.url,
   GITHUB_URL_ISSUES: pkg.bugs.url,
 

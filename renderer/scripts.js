@@ -1,7 +1,6 @@
-/* global $ */
+/* global $, OperatingSystem, StorageDevice, Processor, ClockSpeed, Cache */
 const { ipcRenderer } = require('electron')
 ipcRenderer.send('ipcReady') // Send back a ready signal
-pendingSection()
 ipcRenderer.send('getComputer')
 
 // <region> Events
@@ -23,7 +22,7 @@ $('[data-tab]').click((ev) => {
 
   if (window[cmdGet] !== true) {
     ipcRenderer.send(cmdGet)
-    pendingSection()
+    $('#loader').addClass('loading').attr('src', 'images/loading.svg')
   } else {
     displaySection(dataTgt)
   }
@@ -40,167 +39,43 @@ function reloadSection () {
   $('.nav-link.active').click()
 }
 
-function pendingSection () {
-  $('main').html('<div class="w-100 h-100 d-flex"><img src="images/loading.svg" class="loading w-10"></div>')
-}
-
 function displaySection (sect) {
   $('main').html('')
-  if (sect === 'Processor') {
-    displayProcessor()
-  } else if (sect === 'Storage') {
-    displayStorage()
+  $('#loader').removeClass('loading').attr('src', 'images/reload.svg')
+  switch (sect) {
+    case 'Computer':
+      displayComputer()
+      break
+    case 'Processor':
+      displayProcessor()
+      break
+    case 'Storage':
+      displayStorage()
+      break
   }
 }
 // </region>
 
 // <region> Secion Spawners
+function displayComputer () {
+  $('main').append(OperatingSystem(window.infoOS))
+}
 function displayProcessor () {
   $('main').append(`
-    <div>
-      <h5>Processor</h5>
-      <div class="form-group row">
-        <label class="col-2 col-form-label">Processor</label>
-        <div class="col-10">
-          <input type="text" readonly class="form-control" value="${window.infoCPU.brand}">
-        </div>
-      </div>
-      <div class="form-group row">
-        <label class="col-2 col-form-label">Manufacturer</label>
-        <div class="col-4">
-          <input type="text" readonly class="form-control" value="${window.infoCPU.manufacturer}">
-        </div>
-        <label class="col-2 col-form-label">Vendor</label>
-        <div class="col-4">
-          <input type="text" readonly class="form-control" value="${window.infoCPU.vendor}">
-        </div>
-      </div>
-      <div class="form-group row">
-        <label class="col-2 col-form-label">Family</label>
-        <div class="col-2">
-          <input type="text" readonly class="form-control" value="${window.infoCPU.family}">
-        </div>
-        <label class="col-2 col-form-label">Model</label>
-        <div class="col-2">
-          <input type="text" readonly class="form-control" value="${window.infoCPU.model}">
-        </div>
-          <label class="col-2 col-form-label">Stepping</label>
-        <div class="col-2">
-          <input type="text" readonly class="form-control" value="${window.infoCPU.stepping}">
-        </div>
-      </div>
-    </div>
-    <hr>
+    ${Processor(window.infoCPU)}
 
     <div class="row">
-      <div class="col-4">
-        <h5>Clocks</h5>
-        <div class="form-group row">
-          <label class="col-5 col-form-label">Max Clock</label>
-            <div class="col-7">
-              <input type="text" readonly class="form-control" value="${window.infoCPUSpeed.max} GHz">
-            </div>
-        </div>
-        <div class="form-group row">
-          <label class="col-5 col-form-label">Avg. Clock</label>
-          <div class="col-7">
-            <input type="text" readonly class="form-control" value="${window.infoCPUSpeed.avg} GHz">
-          </div>
-        </div>
-        <div class="form-group row">
-          <label class="col-5 col-form-label">Min Clock</label>
-          <div class="col-7">
-            <input type="text" readonly class="form-control" value="${window.infoCPUSpeed.min} GHz">
-          </div>
-        </div>
-      </div>
-      <div class="col-8">
-        <h5>Cache</h5>
-        <div class="form-group row">
-          <label class="col-3 col-form-label">L1 Data</label>
-          <div class="col-6">
-            <input type="text" readonly class="form-control" value="${formatBytes(window.infoCPU.cache.l1d)}">
-          </div>
-          <div class="col-3">
-            <input type="text" readonly class="form-control" value="${window.infoCPU.cores}-way">
-          </div>
-        </div>
-        <div class="form-group row">
-          <label class="col-3 col-form-label">L1 Inst.</label>
-          <div class="col-6">
-            <input type="text" readonly class="form-control" value="${formatBytes(window.infoCPU.cache.l1i)}">
-          </div>
-          <div class="col-3">
-            <input type="text" readonly class="form-control" value="${window.infoCPU.cores}-way">
-          </div>
-        </div>
-        <div class="form-group row">
-          <label class="col-3 col-form-label">L2 Cache</label>
-          <div class="col-6">
-            <input type="text" readonly class="form-control" value="${formatBytes(window.infoCPU.cache.l2)}">
-          </div>
-          <div class="col-3">
-            <input type="text" readonly class="form-control" value="${window.infoCPU.cores}-way">
-          </div>
-        </div>
-        <div class="form-group row">
-          <label class="col-3 col-form-label">L3 Cache</label>
-          <div class="col-6">
-            <input type="text" readonly class="form-control" value="${formatBytes(window.infoCPU.cache.l3)}">
-          </div>
-          <div class="col-3">
-            <input type="text" readonly class="form-control" value="${window.infoCPU.cores * 2}-way">
-          </div>
-        </div>
-      </div>
+      ${ClockSpeed(window.infoCPUSpeed)}
+      ${Cache(window.infoCPU)}
     </div>
   `)
 }
 function displayStorage () {
-  let add = ''
   for (let d of window.infoStorage) {
     if (!d.type) { continue }
-    add += `
-    <div>
-      <h5>${d.mount}</h5>
-      <div class="row">
-        <div class="col-4">
-          <div class="form-group row">
-            <label class="col-5 col-form-label">System</label>
-            <div class="col-7">
-              <input type="text" readonly class="form-control" value="${d.fs}">
-            </div>
-          </div>
-          <div class="form-group row">
-            <label class="col-5 col-form-label">Type</label>
-            <div class="col-7">
-              <input type="text" readonly class="form-control" value="${d.type}">
-            </div>
-          </div>
-        </div>
-        <div class="col-8">
-          <div class="form-group row">
-            <label class="col-2 col-form-label">Size</label>
-            <div class="col-10">
-              <input type="text" readonly class="form-control" value="${formatBytes(d.size)}">
-            </div>
-          </div>
-          <div class="form-group row">
-            <label class="col-2 col-form-label">Used</label>
-            <div class="col-10">
-              <input type="text" readonly class="form-control" value="${formatBytes(d.used)}">
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="progress" style="height: 8px;">
-        <div class="progress-bar" role="progressbar" aria-valuenow="${d.use.toFixed(0)}" aria-valuemin="0" aria-valuemax="100" style="width: ${d.use}%"></div>
-      </div>
-    </div>
-    `
-    if (d !== window.infoStorage[window.infoStorage.length - 1]) { add += `<hr>` }
+    $('main').append(StorageDevice(d))
+    if (d !== window.infoStorage[window.infoStorage.length - 1]) { $('main').append('<hr>') }
   }
-  $('main').append(add)
 }
 // </region>
 

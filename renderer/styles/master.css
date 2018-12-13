@@ -16,11 +16,26 @@ hr {
    width: 100vw;
 }
 
-.loading {
-}
 #loader {
    position: relative;
-   top: -4px;
+   cursor: pointer;
+}
+#loader:not(.loading) {
+   top: -3px;
+}
+.loading {
+   animation: loading;
+   animation-duration: 1s;
+   animation-timing-function: linear;
+   animation-iteration-count: infinite;
+}
+@keyframes loading {
+   0% {
+      transform: rotate(0deg);
+   }
+   100% {
+      transform: rotate(360deg);
+   }
 }
 
 .w-15 {
