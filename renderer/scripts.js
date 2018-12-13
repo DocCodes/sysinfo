@@ -159,6 +159,7 @@ function displayProcessor () {
 function displayStorage () {
   let add = ''
   for (let d of window.infoStorage) {
+    if (!d.type) { continue }
     add += `
     <div>
       <h5>${d.mount}</h5>
