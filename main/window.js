@@ -22,9 +22,11 @@ async function init () {
     backgroundColor: '#FFFFFF',
     darkTheme: false,
     icon: config.APP_ICON,
-    resizable: false,
+    resizable: true,
     width: config.WINDOW_WIDTH,
     height: config.WINDOW_HEIGHT,
+    minWidth: config.WINDOW_WIDTH * 0.75,
+    minHeight: config.WINDOW_HEIGHT * 0.75,
     title: config.APP_WINDOW_TITLE,
     useContentSize: true,
     show: false

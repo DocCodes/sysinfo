@@ -4,14 +4,16 @@
 
 main {
    overflow-x: hidden;
-   padding-left: 0.75rem;
+
    padding-right: 0.75rem;
+   padding-left: 0.75rem;
 }
 
 hr {
-   width: 100vw;
    position: relative;
    left: -0.75rem;
+
+   width: 100vw;
 }
 
 .loading {

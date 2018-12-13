@@ -21,5 +21,7 @@ module.exports = {
 
   ROOT_PATH: __dirname,
 
-  WINDOW_MAIN: `file://${path.join(__dirname, 'renderer', 'index.html')}`
+  WINDOW_MAIN: `file://${path.join(__dirname, 'renderer', 'index.html')}`,
+  WINDOW_WIDTH: 800,
+  WINDOW_HEIGHT: 600
 }
