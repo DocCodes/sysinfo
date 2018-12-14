@@ -1,8 +1,8 @@
 function OperatingSystem (os) {
-  return `<div>
-    <h5>Operating System</h5>
-    <div class="form-group row">
-      <div class="row col-8">
+  return `<div class="row">
+    <div class="col-8">
+      <h5>Operating System</h5>
+      <div class="form-group row mb-0">
         <label class="col-3 col-form-label">Name</label>
         <div class="col-9 form-group">
           <input type="text" readonly class="form-control" value="${os.distro}">
@@ -32,17 +32,17 @@ function OperatingSystem (os) {
           <input type="text" readonly class="form-control" value="${os.codename !== '' ? os.codename : 'None'}">
         </div>
         <label class="col-3 col-form-label">Architecture</label>
-        <div class="col-3 form-group">
+        <div class="col-3">
           <input type="text" readonly class="form-control" value="${os.arch}">
         </div>
         <label class="col-3 col-form-label">Platform</label>
-        <div class="col-3 form-group">
+        <div class="col-3">
           <input type="text" readonly class="form-control" value="${os.platform}">
         </div>
       </div>
-      <div class="col-4 d-flex align-items-center justify-content-center">
-        <img src="images/logos/${os.logofile === '' ? 'empty' : os.logofile}.png" class="mw-100" style="max-height: 20rem;">
-      </div>
+    </div>
+    <div class="col-4 d-flex align-items-center justify-content-center">
+      <img src="images/logos/${os.logofile === '' ? 'empty' : os.logofile}.png" class="mw-100" style="max-height: 20rem;">
     </div>
   </div>
   <hr>`
