@@ -1,4 +1,4 @@
-/* global $, OperatingSystem, StorageDevice, Processor, ClockSpeed, Cache */
+/* global $, OperatingSystem, Baseboard, StorageDevice, Processor, ClockSpeed, Cache */
 const { ipcRenderer } = require('electron')
 ipcRenderer.send('ipcReady') // Send back a ready signal
 ipcRenderer.send('getComputer')
@@ -59,6 +59,7 @@ function displaySection (sect) {
 // <region> Secion Spawners
 function displayComputer () {
   $('main').append(OperatingSystem(window.infoOS))
+  $('main').append(Baseboard(window.infoBaseboard))
 }
 function displayProcessor () {
   $('main').append(`

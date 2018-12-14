@@ -2,32 +2,32 @@
 function StorageDevice (d) {
   if (!d.type) { return }
   return `<div>
-    <h5>${d.mount}</h5>
+    <h5>${d.fs}</h5>
     <div class="row">
-      <div class="col-4">
+      <div class="col-6">
         <div class="form-group row">
-          <label class="col-5 col-form-label">System</label>
-          <div class="col-7">
-            <input type="text" readonly class="form-control" value="${d.fs}">
+          <label class="col-4 col-form-label">Mount</label>
+          <div class="col-8">
+            <input type="text" readonly class="form-control" value="${d.mount}">
           </div>
         </div>
         <div class="form-group row">
-          <label class="col-5 col-form-label">Type</label>
-          <div class="col-7">
+          <label class="col-4 col-form-label">Type</label>
+          <div class="col-8">
             <input type="text" readonly class="form-control" value="${d.type}">
           </div>
         </div>
       </div>
-      <div class="col-8">
+      <div class="col-6">
         <div class="form-group row">
-          <label class="col-2 col-form-label">Size</label>
-          <div class="col-10">
+          <label class="col-4 col-form-label">Size</label>
+          <div class="col-8">
             <input type="text" readonly class="form-control" value="${formatBytes(d.size)}">
           </div>
         </div>
         <div class="form-group row">
-          <label class="col-2 col-form-label">Used</label>
-          <div class="col-10">
+          <label class="col-4 col-form-label">Used</label>
+          <div class="col-8">
             <input type="text" readonly class="form-control" value="${formatBytes(d.used)}">
           </div>
         </div>

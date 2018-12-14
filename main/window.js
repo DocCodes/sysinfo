@@ -89,7 +89,7 @@ function getComputer () {
   getMultipartData({
     system: 'System',
     bios: 'Bios',
-    baseboard: 'Motherboard',
+    baseboard: 'Baseboard',
     osInfo: 'OS'
   }, 'Computer')
 }

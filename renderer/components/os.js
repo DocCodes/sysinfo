@@ -2,7 +2,7 @@ function OperatingSystem (os) {
   return `<div>
     <h5>Operating System</h5>
     <div class="form-group row">
-      <div class="row col-9">
+      <div class="row col-8">
         <label class="col-3 col-form-label">Name</label>
         <div class="col-9 form-group">
           <input type="text" readonly class="form-control" value="${os.distro}">
@@ -27,9 +27,9 @@ function OperatingSystem (os) {
         <div class="col-3 form-group">
           <input type="text" readonly class="form-control" value="${os.build}">
         </div>
-        <label class="col-3 col-form-label">Codepage</label>
+        <label class="col-3 col-form-label">Codename</label>
         <div class="col-3 form-group">
-          <input type="text" readonly class="form-control" value="${os.codepage.trim()}">
+          <input type="text" readonly class="form-control" value="${os.codename !== '' ? os.codename : 'None'}">
         </div>
         <label class="col-3 col-form-label">Architecture</label>
         <div class="col-3 form-group">
@@ -40,7 +40,7 @@ function OperatingSystem (os) {
           <input type="text" readonly class="form-control" value="${os.platform}">
         </div>
       </div>
-      <div class="col-3 d-flex align-items-center justify-content-center">
+      <div class="col-4 d-flex align-items-center justify-content-center">
         <img src="images/logos/${os.logofile === '' ? 'empty' : os.logofile}.png" class="mw-100" style="max-height: 20rem;">
       </div>
     </div>
