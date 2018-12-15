@@ -26,8 +26,8 @@
     "build-lux": "electron-packager . --overwrite --asar --platform=linux  --arch=all --prune=true --out=builds --app-copyright\"Copyright © 2018 Evan Elias Young\" --icon=\"assets/icons/png/1024x1024.png\"",
     "build-mac": "electron-packager . --overwrite --asar --platform=darwin --arch=all --prune=true --out=builds --app-copyright\"Copyright © 2018 Evan Elias Young\" --icon=\"assets/icons/mac/icon.icns\" --app-bundle-id=\"com.evanyoung.sysinfo\" --app-category-type=\"public.app-category.utilities\"",
     "build-win": "electron-packager . --overwrite --asar --platform=win32  --arch=all --prune=true --out=builds --app-copyright\"Copyright © 2018 Evan Elias Young\" --icon=\"assets/icons/win/icon.ico\"  --win32metadata.CompanyName=\"Evan Elias Young\" --win32metadata.FileDescription=\"Displays system information.\" --win32metadata.ProductName=\"SysInfo\"",
-    "pre-release": "sort-package-json && npm i --save-all",
     "gh-release": "gh-release",
+    "pre-release": "npm i --save-dev --save-prod && sort-package-json",
     "start": "electron .",
     "test": "standard && depcheck --ignores=standard,babel-eslint"
   },
