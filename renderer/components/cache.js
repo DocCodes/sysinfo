@@ -8,7 +8,7 @@ function Cache (cpu) {
         <input type="text" readonly class="form-control" value="${formatBytes(cpu.cache.l1d)}">
       </div>
       <div class="col-3">
-        <input type="text" readonly class="form-control" value="${cpu.cores}-way">
+        <input type="text" readonly class="form-control" value="${cpu.physicalCores}-way">
       </div>
     </div>
     <div class="form-group row">
@@ -17,7 +17,7 @@ function Cache (cpu) {
         <input type="text" readonly class="form-control" value="${formatBytes(cpu.cache.l1i)}">
       </div>
       <div class="col-3">
-        <input type="text" readonly class="form-control" value="${cpu.cores}-way">
+        <input type="text" readonly class="form-control" value="${cpu.physicalCores}-way">
       </div>
     </div>
     <div class="form-group row">
@@ -26,7 +26,7 @@ function Cache (cpu) {
         <input type="text" readonly class="form-control" value="${formatBytes(cpu.cache.l2)}">
       </div>
       <div class="col-3">
-        <input type="text" readonly class="form-control" value="${cpu.cores}-way">
+        <input type="text" readonly class="form-control" value="${cpu.physicalCores}-way">
       </div>
     </div>
     <div class="form-group row">
@@ -35,7 +35,7 @@ function Cache (cpu) {
         <input type="text" readonly class="form-control" value="${formatBytes(cpu.cache.l3)}">
       </div>
       <div class="col-3">
-        <input type="text" readonly class="form-control" value="${cpu.cores * 2}-way">
+        <input type="text" readonly class="form-control" value="${cpu.cores}-way">
       </div>
     </div>
   </div>`

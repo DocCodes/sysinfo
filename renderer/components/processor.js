@@ -8,6 +8,20 @@ function Processor (cpu) {
       </div>
     </div>
     <div class="form-group row">
+      <label class="col-2 col-form-label">Cores</label>
+      <div class="col-2">
+        <input type="text" readonly class="form-control" value="${cpu.physicalCores}">
+      </div>
+      <label class="col-2 col-form-label">Threads</label>
+      <div class="col-2">
+        <input type="text" readonly class="form-control" value="${cpu.cores}">
+      </div>
+        <label class="col-2 col-form-label">Socket</label>
+      <div class="col-2">
+        <input type="text" readonly class="form-control" value="${cpu.socket}">
+      </div>
+    </div>
+    <div class="form-group row">
       <label class="col-2 col-form-label">Manufacturer</label>
       <div class="col-4">
         <input type="text" readonly class="form-control" value="${cpu.manufacturer}">
@@ -26,7 +40,7 @@ function Processor (cpu) {
       <div class="col-2">
         <input type="text" readonly class="form-control" value="${cpu.model}">
       </div>
-        <label class="col-2 col-form-label">Stepping</label>
+      <label class="col-2 col-form-label">Stepping</label>
       <div class="col-2">
         <input type="text" readonly class="form-control" value="${cpu.stepping}">
       </div>

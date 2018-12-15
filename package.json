@@ -1,6 +1,6 @@
 {
   "name": "sysinfo",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "Displays system information.",
   "keywords": [
     "System"
@@ -31,7 +31,7 @@
     "jquery": "^3.3.1",
     "popper.js": "^1.14.6",
     "stringify-object": "^3.3.0",
-    "systeminformation": "^3.51.4"
+    "systeminformation": "^3.52.0"
   },
   "devDependencies": {
     "electron": "^3.0.11",
