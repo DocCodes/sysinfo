@@ -13,8 +13,10 @@ module.exports = {
   APP_VERSION: APP_VERSION,
   APP_WINDOW_TITLE: APP_NAME,
   APP_ICON: process.platform === 'win32'
-    ? path.join(__dirname, 'assets', 'icons', 'png', '1024x1024.png')
-    : path.join(__dirname, 'assets', 'icons', 'win', 'icon.ico'),
+    ? path.join(__dirname, 'assets', 'icons', 'win', 'icon.ico')
+    : process.platform === 'darwin'
+      ? path.join(__dirname, 'assets', 'icons', 'mac', 'icon.icns')
+      : path.join(__dirname, 'assets', 'icons', 'png', '1024x1024.png'),
 
   CONFIG_PATH: path.dirname(appConfig.filePath),
 
