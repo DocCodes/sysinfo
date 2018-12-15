@@ -55,11 +55,11 @@ function getMenuTemplate () {
       label: 'Help',
       submenu: [
         {
-          label: `Learn more about ${config.APP_NAME}`,
+          label: `About ${config.APP_NAME}`,
           click: () => shell.openExternal(config.GITHUB_URL)
         },
         {
-          label: 'Report an Issue...',
+          label: 'Report Issue...',
           click: () => shell.openExternal(config.GITHUB_URL_ISSUES)
         }
       ]
@@ -71,14 +71,14 @@ function getMenuTemplate () {
       label: config.APP_NAME,
       submenu: [
         {
-          label: 'About ' + config.APP_NAME,
+          label: `About ${config.APP_NAME}`,
           role: 'about'
         },
         {
           type: 'separator'
         },
         {
-          label: 'Hide ' + config.APP_NAME,
+          label: `Hide ${config.APP_NAME}`,
           accelerator: 'Command+H',
           role: 'hide'
         },

@@ -17,5 +17,6 @@ async function init () {
   ipcMain.on('getComputer', () => main.getComputer()) // Get computer information
   ipcMain.on('getProcessor', () => main.getProcessor()) // Get processor information
   ipcMain.on('getGraphics', () => main.getGraphics()) // Get graphics information
+  ipcMain.on('getMemory', () => main.getMemory()) // Get memory information
   ipcMain.on('getStorage', () => main.getStorage()) // Get storage information
 }

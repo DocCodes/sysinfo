@@ -9,6 +9,7 @@ const main = module.exports = {
   getProcessor,
   getGraphics,
   getStorage,
+  getMemory,
   exportData,
   win: null
 }
@@ -94,7 +95,7 @@ function exportData (allData) {
       })
     ]
   } else {
-    for (let k of ['system', 'bios', 'baseboard', 'osInfo', 'cpu', 'cpuCurrentspeed', 'cpuTemperature', 'currentLoad', 'graphics', 'fsSize']) {
+    for (let k of ['system', 'bios', 'baseboard', 'osInfo', 'cpu', 'cpuCurrentspeed', 'cpuTemperature', 'currentLoad', 'memLayout', 'graphics', 'fsSize']) {
       dataGetters.push(
         new Promise((resolve, reject) => {
           si[k]().then((r) => { global.dataToExport[k] = r; resolve() })
@@ -141,6 +142,10 @@ function getProcessor () {
     cpuTemperature: 'CPUTemp',
     currentLoad: 'CPULoad'
   }, 'Processor')
+}
+
+function getMemory () {
+  getData('memLayout', 'Memory', 'Memory')
 }
 
 function getGraphics () {
