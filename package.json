@@ -1,6 +1,6 @@
 {
   "name": "sysinfo",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "description": "Displays system information.",
   "keywords": [
     "desktop",
@@ -46,6 +46,7 @@
     "electron": "^3.0.11",
     "electron-packager": "^13.0.0",
     "electron-winstaller": "^2.7.0",
+    "gh-release": "^3.4.0",
     "sort-package-json": "^1.17.0",
     "standard": "^12.0.1"
   }
