@@ -5,6 +5,7 @@ module.exports = {
 const { app, shell, Menu } = require('electron')
 const config = require('../config')
 const win = require('./window')
+const about = require('./about')
 
 async function init () {
   let menu = Menu.buildFromTemplate(getMenuTemplate())
@@ -55,11 +56,16 @@ function getMenuTemplate () {
       label: 'Help',
       submenu: [
         {
-          label: `About ${config.APP_NAME}`,
+          label: `Learn more about ${config.APP_NAME}`,
           click: () => shell.openExternal(config.GITHUB_URL)
         },
+        { type: 'separator' },
         {
-          label: 'Report Issue...',
+          label: 'Report Issue',
+          click: () => shell.openExternal(config.GITHUB_URL_NEW_ISSUE)
+        },
+        {
+          label: 'Search Issues',
           click: () => shell.openExternal(config.GITHUB_URL_ISSUES)
         }
       ]
@@ -132,6 +138,13 @@ function getMenuTemplate () {
     template[0].submenu.push({
       label: 'Quit',
       click: () => app.quit()
+    })
+  }
+
+  if (process.platform === 'linux' || process.platform === 'win32') {
+    template[2].submenu.unshift({
+      label: `About ${config.APP_NAME}`,
+      click: () => about.init()
     })
   }
 

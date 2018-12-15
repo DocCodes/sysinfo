@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - GitHub issues template, for when there's a problem!
+- About menu for Windows and Linux machines.
 ### Changed
 - Update and improvement of the changelog and it's implementation.
 
