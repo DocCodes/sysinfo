@@ -2,35 +2,45 @@ function OperatingSystem (os) {
   return `<div class="row">
     <div class="col-8">
       <h5>Operating System</h5>
-      <div class="form-group row mb-0">
+      <div class="form-group row">
         <label class="col-3 col-form-label">Name</label>
-        <div class="col-9 form-group">
+        <div class="col-9">
           <input type="text" readonly class="form-control" value="${os.distro}">
         </div>
+      </div>
+      <div class="form-group row">
         <label class="col-3 col-form-label">Host</label>
-        <div class="col-9 form-group">
+        <div class="col-9">
           <input type="text" readonly class="form-control" value="${os.hostname}">
         </div>
+      </div>
+      <div class="form-group row">
         <label class="col-3 col-form-label">Serial</label>
-        <div class="col-9 form-group">
+        <div class="col-9">
           <input type="text" readonly class="form-control" value="${os.serial}">
         </div>
+      </div>
+      <div class="form-group row">
         <label class="col-3 col-form-label">Version</label>
-        <div class="col-3 form-group">
+        <div class="col-3">
           <input type="text" readonly class="form-control" value="${os.release}">
         </div>
         <label class="col-3 col-form-label">Kernel</label>
-        <div class="col-3 form-group">
+        <div class="col-3">
           <input type="text" readonly class="form-control" value="${os.kernel}">
         </div>
+      </div>
+      <div class="form-group row">
         <label class="col-3 col-form-label">Build</label>
-        <div class="col-3 form-group">
+        <div class="col-3">
           <input type="text" readonly class="form-control" value="${os.build}">
         </div>
         <label class="col-3 col-form-label">Codename</label>
-        <div class="col-3 form-group">
+        <div class="col-3">
           <input type="text" readonly class="form-control" value="${os.codename !== '' ? os.codename : 'None'}">
         </div>
+      </div>
+      <div class="form-group row">
         <label class="col-3 col-form-label">Architecture</label>
         <div class="col-3">
           <input type="text" readonly class="form-control" value="${os.arch}">

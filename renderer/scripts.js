@@ -1,4 +1,4 @@
-/* global $, OperatingSystem, Baseboard, StorageDevice, Processor, ClockSpeed, Cache */
+/* global $, Baseboard, Cache, ClockSpeed, GraphicsDevice, OperatingSystem, Processor, StorageDevice, System */
 const { ipcRenderer } = require('electron')
 ipcRenderer.send('ipcReady') // Send back a ready signal
 ipcRenderer.send('getComputer')
@@ -49,6 +49,9 @@ function displaySection (sect) {
     case 'Processor':
       displayProcessor()
       break
+    case 'Graphics':
+      displayGraphics()
+      break
     case 'Storage':
       displayStorage()
       break
@@ -58,6 +61,7 @@ function displaySection (sect) {
 
 // <region> Secion Spawners
 function displayComputer () {
+  $('main').append(System(window.infoSystem))
   $('main').append(OperatingSystem(window.infoOS))
   $('main').append(Baseboard(window.infoBaseboard))
 }
@@ -70,6 +74,13 @@ function displayProcessor () {
       ${Cache(window.infoCPU)}
     </div>
   `)
+}
+function displayGraphics () {
+  let i = 1
+  for (let d of window.infoGraphics.controllers) {
+    $('main').append(GraphicsDevice(d, i++))
+    if (d !== window.infoGraphics.controllers[window.infoGraphics.controllers.length - 1]) { $('main').append('<hr>') }
+  }
 }
 function displayStorage () {
   for (let d of window.infoStorage) {

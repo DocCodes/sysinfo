@@ -17,7 +17,23 @@ function getMenuTemplate () {
       label: 'File',
       submenu: [
         {
-          label: process.platform === 'win32' ? 'Close' : 'Close Window',
+          label: 'Export',
+          submenu: [
+            {
+              label: 'Shown information',
+              accelerator: 'CmdOrCtrl+E',
+              click: () => win.exportData(false)
+            },
+            {
+              label: 'All information',
+              accelerator: 'CmdOrCtrl+Shift+E',
+              click: () => win.exportData(true)
+            }
+          ]
+        },
+        { type: 'separator' },
+        {
+          label: process.platform === 'win32' ? 'Exit' : 'Close Window',
           accelerator: 'CmdOrCtrl+W',
           role: 'close'
         }
