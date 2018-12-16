@@ -11,6 +11,7 @@ module.exports = {
   APP_NAME: APP_NAME,
   APP_TEAM: APP_TEAM,
   APP_VERSION: APP_VERSION,
+  APP_DESCRIPTION: pkg.description,
   APP_WINDOW_TITLE: APP_NAME,
   APP_ICON: process.platform === 'win32'
     ? path.join(__dirname, 'assets', 'icons', 'win', 'icon.ico')
