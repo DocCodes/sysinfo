@@ -10,6 +10,7 @@ const main = module.exports = {
   getGraphics,
   getStorage,
   getMemory,
+  getProcesses,
   exportData,
   win: null
 }
@@ -154,4 +155,8 @@ function getGraphics () {
 
 function getStorage () {
   getData('fsSize', 'Storage', 'Storage')
+}
+
+function getProcesses () {
+  getData('processes', 'Processes', 'Processes')
 }

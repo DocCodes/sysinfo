@@ -1,4 +1,4 @@
-/* global $, Baseboard, Cache, ClockSpeed, GraphicsDevice, Memory, OperatingSystem, Processor, StorageDevice, System */
+/* global $, Baseboard, Cache, ClockSpeed, GraphicsDevice, Memory, OperatingSystem, Process, Processor, StorageDevice, System */
 const { ipcRenderer } = require('electron')
 ipcRenderer.send('ipcReady') // Send back a ready signal
 ipcRenderer.send('getComputer')
@@ -46,6 +46,9 @@ function displaySection (sect) {
     case 'Computer':
       displayComputer()
       break
+    case 'Processes':
+      displayProcesses()
+      break
     case 'Processor':
       displayProcessor()
       break
@@ -67,6 +70,25 @@ function displayComputer () {
   $('main').append(System(window.infoSystem))
   $('main').append(OperatingSystem(window.infoOS))
   $('main').append(Baseboard(window.infoBaseboard))
+}
+function displayProcesses () {
+  $('main').append(`
+    <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Name</th>
+        <th scope="col">Usage (User)</th>
+        <th scope="col">Usage (Sys)</th>
+        <th scope="col">Started</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+    </table>
+  `)
+  for (let p of window.infoProcesses.list) {
+    $('main table tbody').append(Process(p))
+  }
 }
 function displayProcessor () {
   $('main').append(`

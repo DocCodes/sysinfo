@@ -19,4 +19,5 @@ async function init () {
   ipcMain.on('getGraphics', () => main.getGraphics()) // Get graphics information
   ipcMain.on('getMemory', () => main.getMemory()) // Get memory information
   ipcMain.on('getStorage', () => main.getStorage()) // Get storage information
+  ipcMain.on('getProcesses', () => main.getProcesses()) // Get processes information
 }
