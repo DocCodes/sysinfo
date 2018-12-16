@@ -14,19 +14,20 @@ const zip = require('cross-zip')
 
 const pkg = require('../package.json')
 const config = require('../config')
+const codeName = pkg.name
+const humanName = config.APP_NAME
 
-const BUILD_NAME = `${pkg.name}-v${config.APP_VERSION}`
+const BUILD_NAME = `${codeName}-${config.APP_VERSION}`
 const BUILD_PATH = path.join(config.ROOT_PATH, 'builds')
-const NODE_MODULES_PATH = path.join(config.ROOT_PATH, 'node_modules')
 
 function build () {
   console.log('Reinstalling node_modules')
-  rimraf.sync(NODE_MODULES_PATH)
   cp.execSync('npm install', { stdio: 'inherit' })
   cp.execSync('npm dedupe', { stdio: 'inherit' })
 
   console.log('Nuking builds/')
   rimraf.sync(BUILD_PATH)
+  fs.mkdirSync(BUILD_PATH)
 
   if (process.platform === 'darwin') {
     buildDarwin(printDone)
@@ -46,7 +47,7 @@ const all = {
   },
   'build-version': config.APP_VERSION,
   dir: config.ROOT_PATH,
-  name: config.APP_NAME,
+  name: codeName,
   out: BUILD_PATH,
   overwrite: true,
   prune: true,
@@ -66,11 +67,11 @@ const win32 = {
   platform: 'win32',
   arch: ['ia32', 'x64'],
   win32metadata: {
-    CompanyName: config.APP_NAME,
-    FileDescription: config.APP_NAME,
-    OriginalFilename: `${config.APP_NAME}.exe`,
-    ProductName: config.APP_NAME,
-    InternalName: config.APP_NAME
+    CompanyName: config.TEAM_NAME,
+    FileDescription: config.APP_DESCRIPTION,
+    OriginalFilename: `${codeName}.exe`,
+    ProductName: humanName,
+    InternalName: codeName
   },
   icon: config.APP_ICON
 }
@@ -88,7 +89,7 @@ function buildDarwin (cb) {
     if (err) return cb(err)
     console.log(`Mac: Packaged electron. ${buildPath}`)
 
-    const appPath = path.join(buildPath[0], `${config.APP_NAME}.app`)
+    const appPath = path.join(buildPath[0], `${codeName}.app`)
     const contentsPath = path.join(appPath, 'Contents')
     const resourcesPath = path.join(contentsPath, 'Resources')
 
@@ -105,7 +106,7 @@ function buildDarwin (cb) {
     function packageZip () {
       console.log('Mac: Creating zip')
 
-      const inPath = path.join(buildPath[0], `${config.APP_NAME}.app`)
+      const inPath = path.join(buildPath[0], `${codeName}.app`)
       const outPath = path.join(BUILD_PATH, `${BUILD_NAME}-darwin.zip`)
       zip.zipSync(inPath, outPath)
 
@@ -124,7 +125,7 @@ function buildDarwin (cb) {
         basepath: config.ROOT_PATH,
         target: targetPath,
         specification: {
-          title: config.APP_NAME,
+          title: humanName,
           icon: config.APP_ICON,
           'icon-size': 128,
           contents: [
@@ -163,29 +164,50 @@ function buildWin32 (cb) {
     const tasks = []
     buildPath.forEach(function (filesPath) {
       const destArch = filesPath.split('-').pop()
+      tasks.push((cb) => packageZip(filesPath, destArch, cb))
       tasks.push((cb) => packageInstaller(filesPath, destArch, cb))
+      tasks.push((cb) => packageDelete(filesPath, destArch, cb))
     })
     series(tasks, cb)
 
+    function packageDelete (filesPath, destArch, cb) {
+      console.log(`Windows: Deleting ${destArch} build.`)
+      const inPath = path.join(BUILD_PATH, path.basename(filesPath))
+      rimraf.sync(inPath)
+
+      console.log(`Windows: Deleted ${destArch} build.`)
+      cb(null)
+    }
+
+    function packageZip (filesPath, destArch, cb) {
+      console.log(`Windows: Creating ${destArch} zip.`)
+      const archStr = destArch === 'ia32' ? 'ia32' : 'x64'
+
+      const inPath = path.join(BUILD_PATH, path.basename(filesPath))
+      const outPath = path.join(BUILD_PATH, `${BUILD_NAME}-win32-${archStr}.zip`)
+      zip.zipSync(inPath, outPath)
+
+      console.log(`Windows: Created ${destArch} zip.`)
+      cb(null)
+    }
+
     function packageInstaller (filesPath, destArch, cb) {
       console.log(`Windows: Creating ${destArch} installer.`)
-
-      const archStr = destArch === 'ia32' ? '-ia32' : ''
+      const archStr = destArch === 'ia32' ? 'ia32' : 'x64'
 
       installer.createWindowsInstaller({
         appDirectory: filesPath,
         authors: config.APP_TEAM,
-        description: config.APP_NAME,
-        exe: `${config.APP_NAME}.exe`,
+        description: config.APP_DESCRIPTION,
+        exe: `${codeName}.exe`,
         iconUrl: `${config.GITHUB_URL_RAW}/icons/win/icon.ico`,
-        loadingGif: path.join(config.STATIC_PATH, 'loading.gif'),
-        name: config.APP_NAME,
+        name: humanName,
         noMsi: true,
         outputDirectory: BUILD_PATH,
-        productName: config.APP_NAME,
-        setupExe: `${config.APP_NAME}Setup-v${config.APP_VERSION}${archStr}.exe`,
-        setupIcon: `${config.APP_ICON}.ico`,
-        title: config.APP_NAME,
+        productName: humanName,
+        setupExe: `${humanName}-Setup-${config.APP_VERSION}-${archStr}.exe`,
+        setupIcon: config.APP_ICON,
+        title: humanName,
         usePackageJson: false,
         version: config.APP_VERSION
       })
@@ -208,8 +230,8 @@ function buildWin32 (cb) {
             )
 
             fs.renameSync(
-              path.join(BUILD_PATH, `${config.APP_NAME}-${config.APP_VERSION}-full.nupkg`),
-              path.join(BUILD_PATH, `${config.APP_NAME}-${config.APP_VERSION}-ia32-full.nupkg`)
+              path.join(BUILD_PATH, `${codeName}-${config.APP_VERSION}-full.nupkg`),
+              path.join(BUILD_PATH, `${codeName}-${config.APP_VERSION}-ia32-full.nupkg`)
             )
 
             const relContent = fs.readFileSync(relPath, 'utf8')
@@ -248,9 +270,8 @@ function buildLinux (cb) {
 
   function packageDeb (filesPath, destArch, cb) {
     console.log(`Linux: Creating ${destArch} deb.`)
-
     const deb = require('nobin-debian-installer')()
-    const destPath = path.join('/opt', config.APP_NAME)
+    const destPath = path.join('/opt', codeName)
 
     deb.pack({
       package: pkg,
@@ -273,11 +294,10 @@ function buildLinux (cb) {
 
   function packageZip (filesPath, destArch, cb) {
     console.log(`Linux: Creating ${destArch} zip.`)
-
-    const archStr = destArch === 'ia32' ? '-ia32' : ''
+    const archStr = destArch === 'ia32' ? 'ia32' : 'x64'
 
     const inPath = path.join(BUILD_PATH, path.basename(filesPath))
-    const outPath = path.join(BUILD_PATH, `${BUILD_NAME}-linux${archStr}.zip`)
+    const outPath = path.join(BUILD_PATH, `${BUILD_NAME}-linux-${archStr}.zip`)
     zip.zipSync(inPath, outPath)
 
     console.log(`Linux: Created ${destArch} zip.`)
