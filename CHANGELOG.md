@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- Process information.
 - Better installers and builds for all platforms.
 - GitHub issues template, for when there's a problem!
 - About menu for Windows and Linux machines.
