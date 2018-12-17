@@ -13,7 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Improvement of the changelog and it's implementation.
 ### Fixed
-- Processing loading timed out on some systems with slower hardware.
+- Corrupt (not appearing) operating system logos.
+- Processor loading timed out on some systems with slower hardware.
 
 ## [v0.1.12] - 2018-12-15
 ### Fixed
