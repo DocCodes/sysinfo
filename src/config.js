@@ -1,6 +1,6 @@
 const appConfig = require('application-config')('SysInfo')
 const path = require('path')
-const pkg = require('./package.json')
+const pkg = require('../package.json')
 
 const APP_NAME = 'SysInfo'
 const APP_TEAM = pkg.author
@@ -13,11 +13,7 @@ module.exports = {
   APP_VERSION: APP_VERSION,
   APP_DESCRIPTION: pkg.description,
   APP_WINDOW_TITLE: APP_NAME,
-  APP_ICON: process.platform === 'win32'
-    ? path.join(__dirname, 'assets', 'icons', 'win', 'icon.ico')
-    : process.platform === 'darwin'
-      ? path.join(__dirname, 'assets', 'icons', 'mac', 'icon.icns')
-      : path.join(__dirname, 'assets', 'icons', 'png', '1024x1024.png'),
+  APP_ICON: getIcon(),
 
   CONFIG_PATH: path.dirname(appConfig.filePath),
 
@@ -27,10 +23,22 @@ module.exports = {
   GITHUB_URL_ISSUES: pkg.bugs.url,
   GITHUB_URL_RAW: 'https://raw.githubusercontent.com/doccodes/sysinfo/master',
 
-  ROOT_PATH: __dirname,
+  ROOT_PATH: path.join(__dirname, '..'),
 
   WINDOW_ABOUT: `file://${path.join(__dirname, 'renderer', 'about.html')}`,
   WINDOW_MAIN: `file://${path.join(__dirname, 'renderer', 'index.html')}`,
   WINDOW_WIDTH: 800,
   WINDOW_HEIGHT: 600
+}
+
+function getIcon () {
+  let b = path.join(__dirname, '..', 'assets', 'icons')
+  switch (process.platform) {
+    case 'win32':
+      return path.join(b, 'icon.ico')
+    case 'darwin':
+      return path.join(b, 'icon.icns')
+    default:
+      return path.join(b, 'icon.png')
+  }
 }

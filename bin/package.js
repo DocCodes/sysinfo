@@ -13,7 +13,7 @@ const series = require('run-series')
 const zip = require('cross-zip')
 
 const pkg = require('../package.json')
-const config = require('../config')
+const config = require('../src/config')
 const codeName = pkg.name
 const humanName = config.APP_NAME
 
@@ -22,10 +22,10 @@ const BUILD_PATH = path.join(config.ROOT_PATH, 'builds')
 const NODE_MODULES_PATH = path.join(config.ROOT_PATH, 'node_modules')
 
 function build () {
-  console.log('Reinstalling node_modules')
-  rimraf.sync(NODE_MODULES_PATH)
-  cp.execSync('npm install', { stdio: 'inherit' })
-  cp.execSync('npm dedupe', { stdio: 'inherit' })
+  // console.log('Reinstalling node_modules')
+  // rimraf.sync(NODE_MODULES_PATH)
+  // cp.execSync('npm install', { stdio: 'inherit' })
+  // cp.execSync('npm dedupe', { stdio: 'inherit' })
 
   console.log('Nuking builds/')
   rimraf.sync(BUILD_PATH)
@@ -167,8 +167,8 @@ function buildWin32 (cb) {
     const tasks = []
     buildPath.forEach(function (filesPath) {
       const destArch = filesPath.split('-').pop()
-      tasks.push((cb) => packageZip(filesPath, destArch, cb))
       tasks.push((cb) => packageInstaller(filesPath, destArch, cb))
+      tasks.push((cb) => packageZip(filesPath, destArch, cb))
       tasks.push((cb) => packageDelete(filesPath, destArch, cb))
     })
     series(tasks, cb)
@@ -203,7 +203,7 @@ function buildWin32 (cb) {
         authors: config.APP_TEAM,
         description: config.APP_DESCRIPTION,
         exe: `${codeName}.exe`,
-        iconUrl: `${config.GITHUB_URL_RAW}/icons/win/icon.ico`,
+        iconUrl: `${config.GITHUB_URL_RAW}/assets/icon.ico`,
         name: humanName,
         noMsi: true,
         outputDirectory: BUILD_PATH,
