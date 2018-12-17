@@ -113,50 +113,54 @@ function exportData (allData) {
   })
 }
 
-function getData (siInstance, pbInstance, parent) {
-  si[siInstance]().then((r) => {
-    main.win.webContents.send('retData', true, parent, pbInstance, r)
-  }).catch((e) => {
-    main.win.webContents.send('retData', false, parent, pbInstance, e)
+function getData (data, parent) {
+  const sessionData = {}
+  let dataGetters = []
+
+  for (let k of data) {
+    dataGetters.push(
+      new Promise((resolve, reject) => {
+        si[k]().then((r) => { sessionData[k] = r; resolve() })
+      })
+    )
+  }
+  Promise.all(dataGetters).then((r) => {
+    main.win.webContents.send('retData', true, parent, sessionData)
+  }).catch((err) => {
+    main.win.webContents.send('retData', false, parent, err)
   })
 }
 
-function getMultipartData (data, parent) {
-  for (let k in data) {
-    getData(k, data[k], parent)
-  }
-}
-
 function getComputer () {
-  getMultipartData({
-    system: 'System',
-    bios: 'Bios',
-    baseboard: 'Baseboard',
-    osInfo: 'OS'
-  }, 'Computer')
+  getData([
+    'system',
+    'bios',
+    'baseboard',
+    'osInfo'
+  ], 'Computer')
 }
 
 function getProcessor () {
-  getMultipartData({
-    cpu: 'CPU',
-    cpuCurrentspeed: 'CPUSpeed',
-    cpuTemperature: 'CPUTemp',
-    currentLoad: 'CPULoad'
-  }, 'Processor')
+  getData([
+    'cpu',
+    'cpuCurrentspeed',
+    'cpuTemperature',
+    'currentLoad'
+  ], 'Processor')
 }
 
 function getMemory () {
-  getData('memLayout', 'Memory', 'Memory')
+  getData(['memLayout'], 'Memory')
 }
 
 function getGraphics () {
-  getData('graphics', 'Graphics', 'Graphics')
+  getData(['graphics'], 'Graphics')
 }
 
 function getStorage () {
-  getData('fsSize', 'Storage', 'Storage')
+  getData(['fsSize'], 'Storage')
 }
 
 function getProcesses () {
-  getData('processes', 'Processes', 'Processes')
+  getData(['processes'], 'Processes')
 }

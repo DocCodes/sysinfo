@@ -4,10 +4,10 @@ ipcRenderer.send('ipcReady') // Send back a ready signal
 ipcRenderer.send('getComputer')
 
 // <region> Events
-ipcRenderer.on('retData', (sender, success, parent, subject, r) => {
+ipcRenderer.on('retData', (sender, success, parent, r) => {
   if (success) {
     window[`get${parent}`] = true
-    window[`info${subject}`] = r
+    window[`info${parent}`] = r
     displaySection(parent)
   } else {
     window[`get${parent}`] = false
@@ -67,11 +67,13 @@ function displaySection (sect) {
 
 // <region> Secion Spawners
 function displayComputer () {
-  $('main').append(System(window.infoSystem))
-  $('main').append(OperatingSystem(window.infoOS))
-  $('main').append(Baseboard(window.infoBaseboard))
+  let bank = window.infoComputer
+  $('main').append(System(bank.system))
+  $('main').append(OperatingSystem(bank.osInfo))
+  $('main').append(Baseboard(bank.baseboard))
 }
 function displayProcesses () {
+  let bank = window.infoProcesses
   $('main').append(`
     <table class="table table-striped">
     <thead>
@@ -86,39 +88,43 @@ function displayProcesses () {
     <tbody></tbody>
     </table>
   `)
-  for (let p of window.infoProcesses.list) {
+  for (let p of bank.processes.list) {
     $('main table tbody').append(Process(p))
   }
 }
 function displayProcessor () {
+  let bank = window.infoProcessor
   $('main').append(`
-    ${Processor(window.infoCPU)}
+    ${Processor(bank.cpu)}
 
     <div class="row">
-      ${ClockSpeed(window.infoCPUSpeed)}
-      ${Cache(window.infoCPU)}
+      ${ClockSpeed(bank.cpuCurrentspeed)}
+      ${Cache(bank.cpu)}
     </div>
   `)
 }
 function displayGraphics () {
+  let bank = window.infoGraphics
   let i = 1
-  for (let d of window.infoGraphics.controllers) {
+  for (let d of bank.graphics.controllers) {
     $('main').append(GraphicsDevice(d, i++))
-    if (d !== window.infoGraphics.controllers[window.infoGraphics.controllers.length - 1]) { $('main').append('<hr>') }
+    if (d !== bank.graphics.controllers[bank.graphics.controllers.length - 1]) { $('main').append('<hr>') }
   }
 }
 function displayMemory () {
+  let bank = window.infoMemory
   let i = 1
-  for (let m of window.infoMemory) {
+  for (let m of bank.memLayout) {
     $('main').append(Memory(m, i++))
-    if (m !== window.infoMemory[window.infoMemory.length - 1]) { $('main').append('<hr>') }
+    if (m !== bank.memLayout[bank.memLayout.length - 1]) { $('main').append('<hr>') }
   }
 }
 function displayStorage () {
-  for (let d of window.infoStorage) {
+  let bank = window.infoStorage
+  for (let d of bank.fsSize) {
     if (!d.type) { continue }
     $('main').append(StorageDevice(d))
-    if (d !== window.infoStorage[window.infoStorage.length - 1]) { $('main').append('<hr>') }
+    if (d !== bank.fsSize[bank.fsSize.length - 1]) { $('main').append('<hr>') }
   }
 }
 // </region>
