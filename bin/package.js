@@ -49,6 +49,7 @@ const all = {
   },
   'build-version': config.APP_VERSION,
   dir: config.ROOT_PATH,
+  ignore: /^\/main|^\/renderer|\/(\.git.*|.*\.md|.*\.markdown)$/,
   name: codeName,
   out: BUILD_PATH,
   overwrite: true,
