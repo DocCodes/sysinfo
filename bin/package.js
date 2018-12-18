@@ -1,9 +1,4 @@
 #!/usr/bin/env node
-
-/**
- * Builds app binaries for Mac, Windows, and Linux.
- */
-
 const cp = require('child_process')
 const electronPackager = require('electron-packager')
 const fs = require('fs')
@@ -18,7 +13,8 @@ const codeName = pkg.name
 const humanName = config.APP_NAME
 
 const BUILD_NAME = `${codeName}-${config.APP_VERSION}`
-const BUILD_PATH = path.join(config.ROOT_PATH, 'builds')
+const DIST_PATH = path.join(config.ROOT_PATH, 'dist')
+const BUILD_PATH = path.join(config.ROOT_PATH, 'build')
 const NODE_MODULES_PATH = path.join(config.ROOT_PATH, 'node_modules')
 
 function build () {
@@ -27,9 +23,15 @@ function build () {
   cp.execSync('npm install', { stdio: 'inherit' })
   cp.execSync('npm dedupe', { stdio: 'inherit' })
 
-  console.log('Nuking builds/')
+  console.log('Nuking dist/ and build/')
+  rimraf.sync(DIST_PATH)
   rimraf.sync(BUILD_PATH)
+  fs.mkdirSync(DIST_PATH)
   fs.mkdirSync(BUILD_PATH)
+
+  console.log('Build: Transpiling code')
+  cp.execSync('npm run rebuild', { NODE_ENV: 'production', stdio: 'inherit' })
+  console.log('Build: Transpiled code')
 
   if (process.platform === 'darwin') {
     buildDarwin(printDone)
@@ -51,7 +53,7 @@ const all = {
   dir: config.ROOT_PATH,
   ignore: /^\/main|^\/renderer|\/(\.git.*|.*\.md|.*\.markdown)$/,
   name: codeName,
-  out: BUILD_PATH,
+  out: DIST_PATH,
   overwrite: true,
   prune: true,
   electronVersion: require('electron/package.json').version
@@ -70,7 +72,7 @@ const win32 = {
   arch: ['ia32', 'x64'],
   win32metadata: {
     CompanyName: config.TEAM_NAME,
-    FileDescription: config.APP_DESCRIPTION,
+    FileDescription: humanName,
     OriginalFilename: `${codeName}.exe`,
     ProductName: humanName,
     InternalName: codeName
@@ -109,7 +111,7 @@ function buildDarwin (cb) {
       console.log('Mac: Creating zip')
 
       const inPath = path.join(buildPath[0], `${codeName}.app`)
-      const outPath = path.join(BUILD_PATH, `${BUILD_NAME}-darwin.zip`)
+      const outPath = path.join(DIST_PATH, `${BUILD_NAME}-darwin.zip`)
       zip.zipSync(inPath, outPath)
 
       console.log('Mac: Created zip')
@@ -120,7 +122,7 @@ function buildDarwin (cb) {
 
       const appDmg = require('appdmg')
 
-      const targetPath = path.join(BUILD_PATH, `${BUILD_NAME}.dmg`)
+      const targetPath = path.join(DIST_PATH, `${BUILD_NAME}.dmg`)
       rimraf.sync(targetPath)
 
       const dmgOpts = {
@@ -174,7 +176,7 @@ function buildWin32 (cb) {
 
     function packageDelete (filesPath, destArch, cb) {
       console.log(`Windows: Deleting ${destArch} build.`)
-      const inPath = path.join(BUILD_PATH, path.basename(filesPath))
+      const inPath = path.join(DIST_PATH, path.basename(filesPath))
       rimraf.sync(inPath)
 
       console.log(`Windows: Deleted ${destArch} build.`)
@@ -185,8 +187,8 @@ function buildWin32 (cb) {
       console.log(`Windows: Creating ${destArch} zip.`)
       const archStr = destArch === 'ia32' ? 'ia32' : 'x64'
 
-      const inPath = path.join(BUILD_PATH, path.basename(filesPath))
-      const outPath = path.join(BUILD_PATH, `${BUILD_NAME}-win32-${archStr}.zip`)
+      const inPath = path.join(DIST_PATH, path.basename(filesPath))
+      const outPath = path.join(DIST_PATH, `${BUILD_NAME}-win32-${archStr}.zip`)
       zip.zipSync(inPath, outPath)
 
       console.log(`Windows: Created ${destArch} zip.`)
@@ -205,7 +207,7 @@ function buildWin32 (cb) {
         iconUrl: `${config.GITHUB_URL_RAW}/assets/icon.ico`,
         name: humanName,
         noMsi: true,
-        outputDirectory: BUILD_PATH,
+        outputDirectory: DIST_PATH,
         productName: humanName,
         setupExe: `${humanName}-Setup-${config.APP_VERSION}-${archStr}.exe`,
         setupIcon: config.APP_ICON,
@@ -216,24 +218,24 @@ function buildWin32 (cb) {
         .then(function () {
           console.log(`Windows: Created ${destArch} installer.`)
 
-          fs.readdirSync(BUILD_PATH)
+          fs.readdirSync(DIST_PATH)
             .filter((name) => name.endsWith('.nupkg') && !name.includes(config.APP_VERSION))
             .forEach((filename) => {
-              fs.unlinkSync(path.join(BUILD_PATH, filename))
+              fs.unlinkSync(path.join(DIST_PATH, filename))
             })
 
           if (destArch === 'ia32') {
             console.log('Windows: Renaming ia32 installer files')
 
-            const relPath = path.join(BUILD_PATH, 'RELEASES-ia32')
+            const relPath = path.join(DIST_PATH, 'RELEASES-ia32')
             fs.renameSync(
-              path.join(BUILD_PATH, 'RELEASES'),
+              path.join(DIST_PATH, 'RELEASES'),
               relPath
             )
 
             fs.renameSync(
-              path.join(BUILD_PATH, `${codeName}-${config.APP_VERSION}-full.nupkg`),
-              path.join(BUILD_PATH, `${codeName}-${config.APP_VERSION}-ia32-full.nupkg`)
+              path.join(DIST_PATH, `${codeName}-${config.APP_VERSION}-full.nupkg`),
+              path.join(DIST_PATH, `${codeName}-${config.APP_VERSION}-ia32-full.nupkg`)
             )
 
             const relContent = fs.readFileSync(relPath, 'utf8')
@@ -279,7 +281,7 @@ function buildLinux (cb) {
       package: pkg,
       info: {
         arch: destArch === 'x64' ? 'amd64' : 'i386',
-        targetDir: BUILD_PATH,
+        targetDir: DIST_PATH,
         depends: 'gconf2, libgtk2.0-0, libnss3, libxss1'
       }
     }, [{
@@ -298,8 +300,8 @@ function buildLinux (cb) {
     console.log(`Linux: Creating ${destArch} zip.`)
     const archStr = destArch === 'ia32' ? 'ia32' : 'x64'
 
-    const inPath = path.join(BUILD_PATH, path.basename(filesPath))
-    const outPath = path.join(BUILD_PATH, `${BUILD_NAME}-linux-${archStr}.zip`)
+    const inPath = path.join(DIST_PATH, path.basename(filesPath))
+    const outPath = path.join(DIST_PATH, `${BUILD_NAME}-linux-${archStr}.zip`)
     zip.zipSync(inPath, outPath)
 
     console.log(`Linux: Created ${destArch} zip.`)

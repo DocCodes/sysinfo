@@ -1,3 +1,5 @@
+@import "fonts";
+
 .c-pointer {
    cursor: pointer;
 }
@@ -36,29 +38,4 @@ hr {
    100% {
       transform: rotate(360deg);
    }
-}
-
-.w-15 {
-   width: 15%;
-}
-.mw-15 {
-   max-width: 15%;
-}
-.h-15 {
-   height: 15%;
-}
-.mh-15 {
-   max-height: 15%;
-}
-.w-10 {
-   width: 10%;
-}
-.mw-10 {
-   max-width: 10%;
-}
-.h-10 {
-   height: 10%;
-}
-.mh-10 {
-   max-height: 10%;
 }
