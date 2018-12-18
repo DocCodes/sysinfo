@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - GitHub issues template, for when there's a problem!
 - About menu for Windows and Linux machines.
 ### Changed
+- More efficient builds and distribution.
 - More efficient file structure.
 - Improvement of the changelog and it's implementation.
 ### Fixed
