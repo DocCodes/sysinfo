@@ -62,7 +62,6 @@ const darwin = {
   arch: 'x64',
   'app-bundle-id': 'com.evaneliasyoung.sysinfo',
   'app-category-type': 'public.app-category.utilities',
-  'helper-bundle-id': 'com.evaneliasyoung.sysinfo-helper',
   icon: config.APP_ICON
 }
 

@@ -21,7 +21,7 @@
   },
   "license": "MIT",
   "author": "Evan Elias Young",
-  "main": "main",
+  "main": "index.js",
   "scripts": {
     "build": "node ./bin/package.js",
     "gh-release": "gh-release",
