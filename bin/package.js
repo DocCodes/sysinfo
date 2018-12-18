@@ -22,10 +22,10 @@ const BUILD_PATH = path.join(config.ROOT_PATH, 'builds')
 const NODE_MODULES_PATH = path.join(config.ROOT_PATH, 'node_modules')
 
 function build () {
-  // console.log('Reinstalling node_modules')
-  // rimraf.sync(NODE_MODULES_PATH)
-  // cp.execSync('npm install', { stdio: 'inherit' })
-  // cp.execSync('npm dedupe', { stdio: 'inherit' })
+  console.log('Reinstalling node_modules')
+  rimraf.sync(NODE_MODULES_PATH)
+  cp.execSync('npm install', { stdio: 'inherit' })
+  cp.execSync('npm dedupe', { stdio: 'inherit' })
 
   console.log('Nuking builds/')
   rimraf.sync(BUILD_PATH)
