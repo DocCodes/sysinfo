@@ -23,11 +23,13 @@
   "author": "Evan Elias Young",
   "main": "index.js",
   "scripts": {
-    "build": "node ./bin/package.js",
+    "rebuild": "gulp all",
+    "build": "gulp",
+    "dist": "node ./bin/package.js",
     "gh-release": "gh-release",
-    "pre-release": "npm i --save-dev --save-prod && sort-package-json",
-    "start": "electron .",
-    "test": "standard && depcheck --ignores=standard,babel-eslint"
+    "pre-release": "npm i && sort-package-json",
+    "start": "gulp && electron .",
+    "test": "standard && depcheck --ignores=standard,jquery,bootstrap-popper.js"
   },
   "dependencies": {
     "application-config": "^1.0.1",
