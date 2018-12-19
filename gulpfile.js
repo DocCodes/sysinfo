@@ -6,6 +6,19 @@ const tilde = require('node-sass-tilde-importer')
 
 $.sass.compiler = require('node-sass')
 
+// <region> Code
+gulp.task('components', () => {
+  return new Promise((resolve, reject) => {
+    pump([
+      gulp.src('src/renderer/components/*.js'),
+      $.newer('build'),
+      $.concat('components.js'),
+      $.minify({ ext: { src: '-debug.js', min: '.js' }, noSource: true }),
+      gulp.dest('build/renderer')
+    ]).then(resolve).catch(reject)
+  })
+})
+
 gulp.task('css', () => {
   return new Promise((resolve, reject) => {
     pump([
@@ -39,18 +52,12 @@ gulp.task('js', () => {
   })
 })
 
-gulp.task('components', () => {
-  return new Promise((resolve, reject) => {
-    pump([
-      gulp.src('src/renderer/components/*.js'),
-      $.newer('build'),
-      $.concat('components.js'),
-      $.minify({ ext: { src: '-debug.js', min: '.js' }, noSource: true }),
-      gulp.dest('build/renderer')
-    ]).then(resolve).catch(reject)
-  })
-})
+gulp.task('light', gulp.parallel('css', 'js'))
 
+gulp.task('code', gulp.parallel('css', 'html', 'js', 'components'))
+// </region>
+
+// <region> Static
 gulp.task('fonts', () => {
   return new Promise((resolve, reject) => {
     pump([
@@ -71,8 +78,8 @@ gulp.task('images', () => {
 })
 
 gulp.task('static', gulp.parallel('fonts', 'images'))
-gulp.task('code', gulp.parallel('css', 'html', 'js', 'components'))
-gulp.task('light', gulp.parallel('css', 'js'))
+// </region>
 
 gulp.task('all', gulp.parallel('static', 'code'))
+
 gulp.task('default', gulp.parallel('code'))
