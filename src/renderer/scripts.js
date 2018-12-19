@@ -1,7 +1,16 @@
-/* global $, Baseboard, Cache, ClockSpeed, GraphicsDevice, Memory, OperatingSystem, Process, Processor, StorageDevice, System */
+/* global $, Baseboard, Cache, ClockSpeed, Disk, GraphicsDevice, Memory, OperatingSystem, Process, Processor, StorageDevice, System */
 const { ipcRenderer } = require('electron')
+const dataSets = {
+  Computer: ['system', 'bios', 'baseboard', 'osInfo'],
+  Disks: ['diskLayout'],
+  Graphics: ['graphics'],
+  Memory: ['memLayout'],
+  Processes: ['processes'],
+  Processor: ['cpu', 'cpuCurrentspeed', 'cpuTemperature', 'currentLoad'],
+  Storage: ['fsSize']
+}
+getDataSet('Computer')
 ipcRenderer.send('ipcReady') // Send back a ready signal
-ipcRenderer.send('getComputer')
 
 // <region> Events
 ipcRenderer.on('retData', (sender, success, parent, r) => {
@@ -21,7 +30,7 @@ $('[data-tab]').click((ev) => {
   $(ev.target).addClass('active')
 
   if (window[cmdGet] !== true) {
-    ipcRenderer.send(cmdGet)
+    getDataSet(dataTgt)
     $('#loader').addClass('loading').attr('src', 'images/loading.svg')
   } else {
     displaySection(dataTgt)
@@ -46,17 +55,20 @@ function displaySection (sect) {
     case 'Computer':
       displayComputer()
       break
-    case 'Processes':
-      displayProcesses()
-      break
-    case 'Processor':
-      displayProcessor()
+    case 'Disks':
+      displayDisks()
       break
     case 'Graphics':
       displayGraphics()
       break
     case 'Memory':
       displayMemory()
+      break
+    case 'Processes':
+      displayProcesses()
+      break
+    case 'Processor':
+      displayProcessor()
       break
     case 'Storage':
       displayStorage()
@@ -65,12 +77,39 @@ function displaySection (sect) {
 }
 // </region>
 
-// <region> Secion Spawners
+// <region> Section Spawners
+function getDataSet (k) {
+  ipcRenderer.send('getData', k, ...dataSets[k])
+}
 function displayComputer () {
   let bank = window.infoComputer
   $('main').append(System(bank.system))
   $('main').append(OperatingSystem(bank.osInfo))
   $('main').append(Baseboard(bank.baseboard))
+}
+function displayDisks () {
+  let bank = window.infoDisks
+  let i = 1
+  for (let d of bank.diskLayout) {
+    $('main').append(Disk(d, i++))
+    if (d !== bank.diskLayout[bank.diskLayout.length - 1]) { $('main').append('<hr>') }
+  }
+}
+function displayGraphics () {
+  let bank = window.infoGraphics
+  let i = 1
+  for (let d of bank.graphics.controllers) {
+    $('main').append(GraphicsDevice(d, i++))
+    if (d !== bank.graphics.controllers[bank.graphics.controllers.length - 1]) { $('main').append('<hr>') }
+  }
+}
+function displayMemory () {
+  let bank = window.infoMemory
+  let i = 1
+  for (let m of bank.memLayout) {
+    $('main').append(Memory(m, i++))
+    if (m !== bank.memLayout[bank.memLayout.length - 1]) { $('main').append('<hr>') }
+  }
 }
 function displayProcesses () {
   let bank = window.infoProcesses
@@ -103,22 +142,6 @@ function displayProcessor () {
     </div>
   `)
 }
-function displayGraphics () {
-  let bank = window.infoGraphics
-  let i = 1
-  for (let d of bank.graphics.controllers) {
-    $('main').append(GraphicsDevice(d, i++))
-    if (d !== bank.graphics.controllers[bank.graphics.controllers.length - 1]) { $('main').append('<hr>') }
-  }
-}
-function displayMemory () {
-  let bank = window.infoMemory
-  let i = 1
-  for (let m of bank.memLayout) {
-    $('main').append(Memory(m, i++))
-    if (m !== bank.memLayout[bank.memLayout.length - 1]) { $('main').append('<hr>') }
-  }
-}
 function displayStorage () {
   let bank = window.infoStorage
   for (let d of bank.fsSize) {
@@ -138,5 +161,5 @@ function formatBytes (bytes, decimals) {
   let i = Math.floor(Math.log(bytes) / Math.log(k))
   return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`
 }
-module.exports = formatBytes
+module.exports = { formatBytes: formatBytes }
 // </region>

@@ -5,12 +5,7 @@ const main = module.exports = {
   setTitle,
   show,
   toggleDevTools,
-  getComputer,
-  getProcessor,
-  getGraphics,
-  getStorage,
-  getMemory,
-  getProcesses,
+  getData,
   exportData,
   win: null
 }
@@ -96,7 +91,7 @@ function exportData (allData) {
       })
     ]
   } else {
-    for (let k of ['system', 'bios', 'baseboard', 'osInfo', 'cpu', 'cpuCurrentspeed', 'cpuTemperature', 'currentLoad', 'memLayout', 'graphics', 'fsSize']) {
+    for (let k of ['system', 'bios', 'baseboard', 'osInfo', 'diskLayout', 'graphics', 'memLayout', 'processes', 'cpu', 'cpuCurrentspeed', 'cpuTemperature', 'currentLoad', 'fsSize']) {
       dataGetters.push(
         new Promise((resolve, reject) => {
           si[k]().then((r) => { global.dataToExport[k] = r; resolve() })
@@ -113,7 +108,7 @@ function exportData (allData) {
   })
 }
 
-function getData (data, parent) {
+function getData (parent, ...data) {
   const sessionData = {}
   let dataGetters = []
 
@@ -129,38 +124,4 @@ function getData (data, parent) {
   }).catch((err) => {
     main.win.webContents.send('retData', false, parent, err)
   })
-}
-
-function getComputer () {
-  getData([
-    'system',
-    'bios',
-    'baseboard',
-    'osInfo'
-  ], 'Computer')
-}
-
-function getProcessor () {
-  getData([
-    'cpu',
-    'cpuCurrentspeed',
-    'cpuTemperature',
-    'currentLoad'
-  ], 'Processor')
-}
-
-function getMemory () {
-  getData(['memLayout'], 'Memory')
-}
-
-function getGraphics () {
-  getData(['graphics'], 'Graphics')
-}
-
-function getStorage () {
-  getData(['fsSize'], 'Storage')
-}
-
-function getProcesses () {
-  getData(['processes'], 'Processes')
 }
