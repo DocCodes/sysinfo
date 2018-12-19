@@ -18,18 +18,24 @@ hr {
    width: 100vw;
 }
 
+#osLogo {
+   max-height: 20rem;
+}
+
 #loader {
    position: relative;
    cursor: pointer;
-}
-#loader:not(.loading) {
-   top: -3px;
-}
-.loading {
-   animation: loading;
-   animation-duration: 1s;
-   animation-timing-function: linear;
-   animation-iteration-count: infinite;
+
+   &:not(.loading) {
+      top: -3px;
+   }
+
+   &.loading {
+      animation: loading;
+      animation-duration: 1s;
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
+   }
 }
 @keyframes loading {
    0% {
