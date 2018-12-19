@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [v0.2.0] - 2018-12-19
 ### Added
 - Disk information.
 - Process information.
@@ -37,5 +39,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Pure Javascript**
 - **Beautiful user experience**
 
-[Unreleased]: https://github.com/doccodes/sysinfo/compare/v0.1.12...HEAD
+[Unreleased]: https://github.com/doccodes/sysinfo/compare/v0.2.0...HEAD
+[v0.2.0]: https://github.com/doccodes/sysinfo/compare/v0.1.12...v0.2.0
 [v0.1.12]: https://github.com/doccodes/sysinfo/compare/v0.1.11...v0.1.12
