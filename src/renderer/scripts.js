@@ -1,4 +1,4 @@
-/* global $, Baseboard, Cache, ClockSpeed, Disk, GraphicsDevice, Memory, OperatingSystem, Process, Processor, StorageDevice, System */
+/* global $, Baseboard, ClockCache, Disk, GraphicsDevice, Memory, OperatingSystem, Process, Processor, StorageDevice, System */
 const { ipcRenderer } = require('electron')
 const dataSets = {
   Computer: ['system', 'bios', 'baseboard', 'osInfo'],
@@ -135,11 +135,7 @@ function displayProcessor () {
   let bank = window.infoProcessor
   $('main').append(`
     ${Processor(bank.cpu)}
-
-    <div class="row">
-      ${ClockSpeed(bank.cpuCurrentspeed)}
-      ${Cache(bank.cpu)}
-    </div>
+    ${ClockCache(bank.cpuCurrentspeed, bank.cpu)}
   `)
 }
 function displayStorage () {

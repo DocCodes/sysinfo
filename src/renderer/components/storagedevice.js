@@ -4,33 +4,21 @@ function StorageDevice (d) {
   return `<div>
     <h5>${d.fs}</h5>
     <div class="row">
-      <div class="col-6">
-        <div class="form-group row">
-          <label class="col-4 col-form-label">Mount</label>
-          <div class="col-8">
-            <input type="text" readonly class="form-control" value="${d.mount}">
-          </div>
-        </div>
-        <div class="form-group row">
-          <label class="col-4 col-form-label">Type</label>
-          <div class="col-8">
-            <input type="text" readonly class="form-control" value="${d.type}">
-          </div>
-        </div>
+      <label class="col-sm-2 col-xl-1 col-form-label">Mount</label>
+      <div class="col-sm-4 col-xl-2 form-group">
+        <input type="text" readonly class="form-control" value="${d.mount}">
       </div>
-      <div class="col-6">
-        <div class="form-group row">
-          <label class="col-4 col-form-label">Size</label>
-          <div class="col-8">
-            <input type="text" readonly class="form-control" value="${formatBytes(d.size)}">
-          </div>
-        </div>
-        <div class="form-group row">
-          <label class="col-4 col-form-label">Used</label>
-          <div class="col-8">
-            <input type="text" readonly class="form-control" value="${formatBytes(d.used)}">
-          </div>
-        </div>
+      <label class="col-sm-2 col-xl-1 col-form-label">Type</label>
+      <div class="col-sm-4 col-xl-2 form-group">
+        <input type="text" readonly class="form-control" value="${d.type}">
+      </div>
+      <label class="col-sm-2 col-xl-1 col-form-label">Size</label>
+      <div class="col-sm-4 col-xl-2 form-group">
+        <input type="text" readonly class="form-control" value="${formatBytes(d.size)}">
+      </div>
+      <label class="col-sm-2 col-xl-1 col-form-label">Used</label>
+      <div class="col-sm-4 col-xl-2 form-group">
+        <input type="text" readonly class="form-control" value="${formatBytes(d.used)}">
       </div>
     </div>
     <div class="progress" style="height: 8px;">
