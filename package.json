@@ -11,13 +11,13 @@
     "system",
     "systeminformation"
   ],
-  "homepage": "https://github.com/DocCodes/sysinfo#readme",
+  "homepage": "https://github.com/evaneliasyoung/sysinfo#readme",
   "bugs": {
-    "url": "https://github.com/DocCodes/sysinfo/issues"
+    "url": "https://github.com/evaneliasyoung/sysinfo/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/DocCodes/sysinfo"
+    "url": "https://github.com/evaneliasyoung/sysinfo"
   },
   "license": "MIT",
   "author": "Evan Elias Young",

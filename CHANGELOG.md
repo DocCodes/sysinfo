@@ -43,6 +43,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Pure Javascript**
 - **Beautiful user experience**
 
-[Unreleased]: https://github.com/doccodes/sysinfo/compare/v0.2.0...HEAD
-[v0.2.0]: https://github.com/doccodes/sysinfo/compare/v0.1.12...v0.2.0
-[v0.1.12]: https://github.com/doccodes/sysinfo/compare/v0.1.11...v0.1.12
+[Unreleased]: https://github.com/evaneliasyoung/sysinfo/compare/v0.2.0...HEAD
+[v0.2.0]: https://github.com/evaneliasyoung/sysinfo/compare/v0.1.12...v0.2.0
+[v0.1.12]: https://github.com/evaneliasyoung/sysinfo/compare/v0.1.11...v0.1.12

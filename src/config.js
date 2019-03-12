@@ -21,7 +21,7 @@ module.exports = {
   GITHUB_URL: pkg.repository.url,
   GITHUB_URL_NEW_ISSUE: `${pkg.buds}/new`,
   GITHUB_URL_ISSUES: pkg.bugs.url,
-  GITHUB_URL_RAW: 'https://raw.githubusercontent.com/doccodes/sysinfo/master',
+  GITHUB_URL_RAW: 'https://raw.githubusercontent.com/evaneliasyoung/sysinfo/master',
 
   ROOT_PATH: path.join(__dirname, '..'),
 
